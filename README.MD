@@ -6,11 +6,7 @@
 ```
 ./run vf vf-container
 ```
-3. create database
-```
-./exec vf-container
-```
-4. Go to `localhost` in browser and setup vanilla forum with following values
+3. Go to `localhost` in browser and setup vanilla forum with following values
 - dbhost: localhost
 - db: vanilla_data
 - dbuser: vanilla_user
