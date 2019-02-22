@@ -22,7 +22,8 @@ docker run -p 80:80 -p 3306:3306 -dit --name vf-container bqiaodev/vanilla-forum
 ./run vf vf-container
 ```
 
-### Once up and running, go to `localhost` in browser and setup Vanilla Forum with following values
+### Once up and running
+Go to `localhost` in browser and setup Vanilla Forum with following values
 - dbhost: localhost
 - db: vanilla_data
 - dbuser: vanilla_user
