@@ -1,16 +1,33 @@
-# Centos based container with Apache, PHP and MySql
-FROM apache-php-mysql
+FROM centos:7
 MAINTAINER bingqiao <bqiaodev@gmail.com>
 
-COPY ./binaries/vanilla/*.zip /tmp/
+# update and install packages
+RUN yum -y update && \
+yum -y install wget tar unzip && \
+yum -y install lsof && \
+yum -y install epel-release yum-utils && \
+yum -y install httpd && \
+yum -y install python36 && \
+yum -y install python36-setuptools && \
+easy_install-3.6 pip && pip3 install requests
 
-RUN unzip -o /tmp/*.zip -d /var/www/html
+RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
+yum-config-manager --enable remi-php73 && \
+yum -y install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysqlnd php-mbstring
+
+RUN wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm && \
+rpm --force -ivh mysql-community-release-el7-5.noarch.rpm && \
+yum -y update && \
+yum -y install mysql-server
+
+# install vanilla forum
+RUN wget https://github.com/vanilla/vanilla/releases/download/Vanilla_2.8/vanilla-2.8.zip -O /tmp/vanilla.zip
+
+RUN unzip -o /tmp/vanilla.zip -d /var/www/html
 
 ADD init.sh /scripts/init.sh
 
-# fix windows carriage return
-RUN sed -i -e 's/\r$//' /scripts/init.sh && \
-chmod u+x /scripts/init.sh
+RUN chmod u+x /scripts/init.sh
 
 COPY ./config/httpd/httpd.conf /etc/httpd/conf/
 
